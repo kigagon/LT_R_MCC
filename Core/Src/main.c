@@ -113,7 +113,6 @@ uint8_t  Key_State = 0;
 
 #define FLASH_ST1_ADDR   ADDR_FLASH_PAGE_255   /* Start @ of user Flash area */
 
-
 #define DATA_64                 ((uint64_t)0x1234567812345678)
 #define DATA_32                 ((uint32_t)0x12345678)
 
@@ -125,7 +124,6 @@ uint8_t Type_Mode ;
 
 /*Variable used for Erase procedure*/
 static FLASH_EraseInitTypeDef EraseInitStruct;
-
 
 static uint32_t GetPage(uint32_t Address);
 static uint32_t GetBank(uint32_t Address);
@@ -195,7 +193,7 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM2_Init();
   MX_TIM3_Init();
-//  MX_IWDG_Init();
+  MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
 
 
@@ -438,7 +436,9 @@ int main(void)
 	  /* Enable the UART Data Register not empty Interrupt */
 	  __HAL_UART_ENABLE_IT(&huart2, UART_IT_RXNE);
 
+	  ERR_LED_ON();
 	    Read_Key();
+	    ERR_LED_OFF();
 
 	    if(rx2_Receive_complete == 1){
 	      SW_Com();
@@ -2015,12 +2015,12 @@ void Read_Key(void){
       Pre_Key_State = 1;
     }
 
-
+/*
     while(1){
 
-    /* Enable the UART Error Interrupt: (Frame error, noise error, overrun error) */
+    // Enable the UART Error Interrupt: (Frame error, noise error, overrun error)
     __HAL_UART_ENABLE_IT(&huart2, UART_IT_ERR);
-    /* Enable the UART Data Register not empty Interrupt */
+    // Enable the UART Data Register not empty Interrupt
     __HAL_UART_ENABLE_IT(&huart2, UART_IT_RXNE);
 
       if(rx2_Receive_complete == 1){
@@ -2032,6 +2032,7 @@ void Read_Key(void){
         }
       }
     }
+  */
   }
   else{
     Pre_Key_State = 0;
@@ -2397,39 +2398,39 @@ void SW_Com(void){
           } */
 
           //if(Key_State == 0){   //키 입력이 존재할때 키 입력을 우선한다.
-            LED_State[0] = (Uart_rx2_buf[6] >> 7) & 0x01 ;//-> PUMP1_AUTO
-            LED_State[1] = (Uart_rx2_buf[6] >> 6) & 0x01 ;//-> PUMP1_STOP
-            LED_State[2] = (Uart_rx2_buf[6] >> 5) & 0x01 ;//-> PUMP1_MANUAL
+ //           LED_State[0] = (Uart_rx2_buf[6] >> 7) & 0x01 ;//-> PUMP1_AUTO
+ //           LED_State[1] = (Uart_rx2_buf[6] >> 6) & 0x01 ;//-> PUMP1_STOP
+ //           LED_State[2] = (Uart_rx2_buf[6] >> 5) & 0x01 ;//-> PUMP1_MANUAL
             LED_State[3] = (Uart_rx2_buf[6] >> 4) & 0x01 ;//-> PUMP1_CHECK
             LED_State[4] = (Uart_rx2_buf[6] >> 3) & 0x01 ;//-> PUMP1_PS
 
-            LED_State[5] = (Uart_rx2_buf[6] >> 2) & 0x01 ;//-> PUMP2_AUTO
-            LED_State[6] = (Uart_rx2_buf[6] >> 1) & 0x01 ;//-> PUMP2_STOP
-            LED_State[7] = (Uart_rx2_buf[6] >> 0) & 0x01 ;//-> PUMP2_MANUAL
+//            LED_State[5] = (Uart_rx2_buf[6] >> 2) & 0x01 ;//-> PUMP2_AUTO
+//            LED_State[6] = (Uart_rx2_buf[6] >> 1) & 0x01 ;//-> PUMP2_STOP
+//            LED_State[7] = (Uart_rx2_buf[6] >> 0) & 0x01 ;//-> PUMP2_MANUAL
             LED_State[8] = (Uart_rx2_buf[7] >> 7) & 0x01 ;//-> PUMP2_CHECK
             LED_State[9] = (Uart_rx2_buf[7] >> 6) & 0x01 ;//-> PUMP2_PS
 
-            LED_State[10] = (Uart_rx2_buf[7] >> 5) & 0x01 ;//-> PUMP3_AUTO
-            LED_State[11] = (Uart_rx2_buf[7] >> 4) & 0x01 ;//-> PUMP3_STOP
-            LED_State[12] = (Uart_rx2_buf[7] >> 3) & 0x01 ;//-> PUMP3_MANUAL
+//            LED_State[10] = (Uart_rx2_buf[7] >> 5) & 0x01 ;//-> PUMP3_AUTO
+//            LED_State[11] = (Uart_rx2_buf[7] >> 4) & 0x01 ;//-> PUMP3_STOP
+//            LED_State[12] = (Uart_rx2_buf[7] >> 3) & 0x01 ;//-> PUMP3_MANUAL
             LED_State[13] = (Uart_rx2_buf[7] >> 2) & 0x01 ;//-> PUMP3_CHECK
             LED_State[14] = (Uart_rx2_buf[7] >> 1) & 0x01 ;//-> PUMP3_PS
 
-            LED_State[15] = (Uart_rx2_buf[7] >> 0) & 0x01 ;//-> PUMP4_AUTO
-            LED_State[16] = (Uart_rx2_buf[8] >> 7) & 0x01 ;//-> PUMP4_STOP
-            LED_State[17] = (Uart_rx2_buf[8] >> 6) & 0x01 ;//-> PUMP4_MANUAL
+//            LED_State[15] = (Uart_rx2_buf[7] >> 0) & 0x01 ;//-> PUMP4_AUTO
+//            LED_State[16] = (Uart_rx2_buf[8] >> 7) & 0x01 ;//-> PUMP4_STOP
+//            LED_State[17] = (Uart_rx2_buf[8] >> 6) & 0x01 ;//-> PUMP4_MANUAL
             LED_State[18] = (Uart_rx2_buf[8] >> 5) & 0x01 ;//-> PUMP4_CHECK
             LED_State[19] = (Uart_rx2_buf[8] >> 4) & 0x01 ;//-> PUMP4_PS
 
-            LED_State[20] = (Uart_rx2_buf[8] >> 3) & 0x01 ;//-> PUMP5_AUTO
-            LED_State[21] = (Uart_rx2_buf[8] >> 2) & 0x01 ;//-> PUMP5_STOP
-            LED_State[22] = (Uart_rx2_buf[8] >> 1) & 0x01 ;//-> PUMP5_MANUAL
+//            LED_State[20] = (Uart_rx2_buf[8] >> 3) & 0x01 ;//-> PUMP5_AUTO
+//            LED_State[21] = (Uart_rx2_buf[8] >> 2) & 0x01 ;//-> PUMP5_STOP
+//            LED_State[22] = (Uart_rx2_buf[8] >> 1) & 0x01 ;//-> PUMP5_MANUAL
             LED_State[23] = (Uart_rx2_buf[8] >> 0) & 0x01 ;//-> PUMP5_CHECK
             LED_State[24] = (Uart_rx2_buf[9] >> 7) & 0x01 ;//-> PUMP5_PS
 
-            LED_State[25] = (Uart_rx2_buf[9] >> 6) & 0x01 ;//-> PUMP6_AUTO
-            LED_State[26] = (Uart_rx2_buf[9] >> 5) & 0x01 ;//-> PUMP6_STOP
-            LED_State[27] = (Uart_rx2_buf[9] >> 4) & 0x01 ;//-> PUMP6_MANUAL
+//            LED_State[25] = (Uart_rx2_buf[9] >> 6) & 0x01 ;//-> PUMP6_AUTO
+//            LED_State[26] = (Uart_rx2_buf[9] >> 5) & 0x01 ;//-> PUMP6_STOP
+//            LED_State[27] = (Uart_rx2_buf[9] >> 4) & 0x01 ;//-> PUMP6_MANUAL
             LED_State[28] = (Uart_rx2_buf[9] >> 3) & 0x01 ;//-> PUMP6_CHECK
             LED_State[29] = (Uart_rx2_buf[9] >> 2) & 0x01 ;//-> PUMP6_PS
 
